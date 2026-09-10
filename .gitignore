@@ -1,0 +1,14 @@
+node_modules/
+.next/
+out/
+build/
+
+# never commit secrets
+.env
+.env.*
+environment.env
+
+.DS_Store
+*.pem
+npm-debug.log*
+.vercel
