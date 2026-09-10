@@ -1,0 +1,15 @@
+/* Site-level resets and the few rules that can't be inline. Imported by app/layout.js. */
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+body { margin: 0; background: var(--color-bg); }
+a { color: var(--color-accent-700); text-decoration: none; }
+a:hover { color: var(--color-accent-500); }
+
+@keyframes blink { 0%, 100% { opacity: 1 } 50% { opacity: 0 } }
+
+/* nav links stay ink-colored, accent on hover */
+[data-navlink] { color: var(--color-text); }
+[data-navlink]:hover { color: var(--color-accent-700); }
+
+/* suggested-question chips */
+[data-chip]:hover { border-color: var(--color-accent); color: var(--color-accent-700); }
