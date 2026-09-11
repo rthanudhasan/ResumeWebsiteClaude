@@ -1,12 +1,16 @@
 import { NextResponse } from 'next/server';
 
-const apiKey = process.env.GEMINI_API_KEY;
-const model = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
-
 const MAX_TURNS = 20;
 const MAX_CHARS = 1500;
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(req) {
+  // Read env inside the handler — module-scope reads can capture an empty value
+  // on a cold instance before app settings are injected.
+  const apiKey = process.env.GEMINI_API_KEY;
+  const model = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
+
   try {
     if (!apiKey) {
       return NextResponse.json({ message: 'Server is missing GEMINI_API_KEY.' }, { status: 500 });
@@ -24,9 +28,16 @@ export async function POST(req) {
 Resume:
 ${DATA_RESUME}
 
+Readers are usually technical managers, directors and VPs evaluating Raj for a lead or architect role, so
+lead with scope, outcomes and cost, and keep tool detail to what the question asks for.
+
 Help users learn more about Raj from his resume. Answer in the first person as Raj, cite the role and
 year an answer comes from, and keep replies to a short paragraph. If the answer is not in the resume,
-say you do not see that information in the resume and point them to rajkumar.thanudhasan@gmail.com.`;
+say you do not see that information in the resume and point them to rajkumar.thanudhasan@gmail.com.
+
+If asked what kind of work Raj wants, what he is looking for, or whether he is available: he is open to
+Lead Developer and Solution Architect roles in RPA and intelligent automation, including leading a CoE,
+and can be reached at rajkumar.thanudhasan@gmail.com or (407) 409-0749.`;
 
     const conversation = trimmed
       .map((m) => {
@@ -70,7 +81,10 @@ Respond helpfully and briefly.`;
     return NextResponse.json({ message: text });
   } catch (error) {
     console.error('Route error:', error);
-    return NextResponse.json({ message: 'Unexpected server error.' }, { status: 500 });
+    return NextResponse.json(
+      { message: 'Unexpected server error: ' + (error && error.message ? error.message : String(error)) },
+      { status: 500 }
+    );
   }
 }
 

@@ -13,3 +13,22 @@ a:hover { color: var(--color-accent-500); }
 
 /* suggested-question chips */
 [data-chip]:hover { border-color: var(--color-accent); color: var(--color-accent-700); }
+
+/* Responsive: the layout is a desktop grid; these are the only breakpoints. */
+@media (max-width: 980px) {
+  [data-r~="split"] { grid-template-columns: minmax(0, 1fr) !important; gap: 32px !important; }
+  [data-r~="hero-text"] { border-right: 0 !important; padding: 48px 0 0 !important; }
+  [data-r~="hero-img"] { margin: 0 0 48px !important; min-height: 0 !important; }
+  [data-r~="hero-img"] img { min-height: 0 !important; height: clamp(260px, 52vw, 420px) !important; }
+  [data-r~="row"] { grid-template-columns: minmax(0, 1fr) !important; gap: 18px !important; }
+  [data-r~="stat"] { border-left: 0 !important; border-top: 2px solid var(--color-accent) !important; padding: 14px 0 0 !important; }
+}
+@media (max-width: 760px) {
+  [data-r~="navbar"] { flex-wrap: wrap !important; gap: 12px !important; padding: 12px 20px !important; }
+  [data-r~="nav"] { order: 3; width: 100%; margin-left: 0 !important; gap: 18px !important; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 2px; }
+  [data-r~="nav"] a { white-space: nowrap; }
+  [data-r~="pad"] { padding-left: 20px !important; padding-right: 20px !important; }
+  [data-r~="resultgrid"] { margin: 0 !important; }
+  [data-r~="quote"] { padding: 28px 0 !important; }
+  [data-r~="chat"] { min-height: 0 !important; }
+}

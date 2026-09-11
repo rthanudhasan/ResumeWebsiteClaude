@@ -27,7 +27,7 @@ function s(css) {
 const KICKER = "font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-accent-700)";
 const MONO_SM = "font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--color-neutral-700)";
 const H2 = 'font-size: clamp(32px, 3.6vw, 46px); line-height: 1.02; letter-spacing: -0.03em; font-weight: 900';
-const WRAP = 'max-width: 1240px; margin: 0 auto; padding: 72px 32px';
+const WRAP = 'max-width: 1240px; margin: 0 auto; padding: clamp(44px, 7vw, 72px) 32px';
 const ROW = 'display: grid; grid-template-columns: 200px minmax(0, 1fr) minmax(0, 240px); gap: 32px; padding: 32px 0';
 const STAT_CELL = 'background: var(--color-accent); padding: 44px 28px; box-shadow: inset -2px 0 0 rgba(255,255,255,0.35), inset 0 -2px 0 rgba(255,255,255,0.35)';
 const STAT_NUM = 'font-size: clamp(40px, 4.5vw, 60px); font-weight: 900; letter-spacing: -0.04em; line-height: 1';
@@ -129,7 +129,7 @@ const NAV = [
 
 const SUGGESTIONS = [
   'What are you working on now?',
-  'Have you built anything with AI agents?',
+  'How do you work with Directors and VPs?',
   'How did you get to $500K in savings?',
   'Are you looking for a role?'
 ];
@@ -165,13 +165,19 @@ export default function Page() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: history })
       });
-      if (!res.ok) throw new Error('api ' + res.status);
-      const data = await res.json();
-      if (!data || typeof data.message !== 'string') throw new Error('bad payload');
-      reply = data.message;
+      // The route returns { message } on both success and failure, so read the
+      // body either way and surface what the server actually said.
+      const data = await res.json().catch(() => null);
+      if (data && typeof data.message === 'string') {
+        reply = res.ok ? data.message : data.message + ' (HTTP ' + res.status + ')';
+      } else {
+        reply = 'The assistant returned an unreadable response (HTTP ' + res.status + ').';
+      }
     } catch (e) {
       reply =
-        "Something went wrong reaching the assistant. Email Raj directly at rajkumar.thanudhasan@gmail.com.";
+        'Could not reach the assistant: ' +
+        (e && e.message ? e.message : 'network error') +
+        '. Email Raj directly at rajkumar.thanudhasan@gmail.com.';
     }
     setTyping(false);
     setLog((l) => l.concat([{ me: false, text: reply }]));
@@ -181,11 +187,11 @@ export default function Page() {
   return (
     <div style={s("font-family: 'Archivo', system-ui, sans-serif; color: var(--color-text); background: var(--color-bg); -webkit-font-smoothing: antialiased")}>
       <header style={s('position: sticky; top: 0; z-index: 20; background: var(--color-bg); border-bottom: 2px solid var(--color-text)')}>
-        <div style={s('max-width: 1240px; margin: 0 auto; padding: 14px 32px; display: flex; align-items: center; gap: 32px')}>
+        <div data-r="pad navbar" style={s('max-width: 1240px; margin: 0 auto; padding: 14px 32px; display: flex; align-items: center; gap: 32px')}>
           <a href="#top" data-navlink style={s('font-weight: 900; font-size: 18px; letter-spacing: -0.02em')}>
             RAJKUMAR THANUDHASAN
           </a>
-          <nav style={s('display: flex; gap: 24px; margin-left: auto; font-size: 13px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase')}>
+          <nav data-r="nav" style={s('display: flex; gap: 24px; margin-left: auto; font-size: 13px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase')}>
             {NAV.map(([href, label]) => (
               <a key={href} href={href} data-navlink>
                 {label}
@@ -198,9 +204,9 @@ export default function Page() {
         </div>
       </header>
 
-      <section id="top" style={s('max-width: 1240px; margin: 0 auto; padding: 0 32px')}>
-        <div style={s('display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 0; align-items: stretch')}>
-          <div style={s('padding: 72px 48px 56px 0; border-right: 2px solid var(--color-divider)')}>
+      <section id="top" data-r="pad" style={s('max-width: 1240px; margin: 0 auto; padding: 0 32px')}>
+        <div data-r="split" style={s('display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 0; align-items: stretch')}>
+          <div data-r="hero-text" style={s('padding: 72px 48px 56px 0; border-right: 2px solid var(--color-divider)')}>
             <div style={s(KICKER + '; margin-bottom: 28px')}>
               Lead Developer &amp; Solution Architect — Intelligent Automation
             </div>
@@ -208,23 +214,23 @@ export default function Page() {
               I build automation that pays for itself in the first year.
             </h1>
             <p style={s('font-size: 19px; line-height: 1.5; max-width: 56ch; margin: 0 0 36px; color: var(--color-neutral-800)')}>
-              Fourteen years designing and running RPA programs for Station Casinos, Dish Network and Nielsen — from the
-              first process assessment through architecture and build, to the production floor where 241 processes and 11
-              unattended bots have to run every day.
+              Fourteen years in automation, the last eight running RPA programs for Station Casinos, Dish Network and
+              Nielsen. I set automation strategy with Directors and VPs, own licensing, budget and hiring, and stay accountable for the production
+              floor — 241 processes on 11 unattended bots that have to run every day.
             </p>
             <div style={s('display: flex; flex-wrap: wrap; gap: 12px')}>
-              <a className="btn btn-primary" href="/Rajkumar_Thanudhasan_Resume.pdf">
+              <a className="btn btn-primary" href="/Rajkumar_Thanudhasan_Resume.pdf" target="_blank" rel="noopener noreferrer">
                 Download resume (PDF)
               </a>
               <a className="btn btn-secondary" href="#ai">
                 Ask my AI about my work
               </a>
-              <a className="btn btn-ghost" href="https://www.linkedin.com/in/rajkumarthanudhasan/">
+              <a className="btn btn-ghost" href="https://www.linkedin.com/in/rajkumarthanudhasan/" target="_blank" rel="noopener noreferrer">
                 LinkedIn
               </a>
             </div>
           </div>
-          <div className="grayscale" style={s('margin: 72px 0 56px 48px; min-height: 420px; overflow: hidden; background: var(--color-neutral-200)')}>
+          <div className="grayscale" data-r="hero-img" style={s('margin: 72px 0 56px 48px; min-height: 420px; overflow: hidden; background: var(--color-neutral-200)')}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/portrait.jpg"
@@ -236,8 +242,8 @@ export default function Page() {
       </section>
 
       <section id="results" style={s('border-top: 2px solid var(--color-text); border-bottom: 2px solid var(--color-text); background: var(--color-accent); color: #fff')}>
-        <div style={s('max-width: 1240px; margin: 0 auto; padding: 0 32px')}>
-          <div style={s('display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); background: var(--color-accent); margin: 0 -28px')}>
+        <div data-r="pad" style={s('max-width: 1240px; margin: 0 auto; padding: 0 32px')}>
+          <div data-r="resultgrid" style={s('display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); background: var(--color-accent); margin: 0 -28px')}>
             {STATS.map(([num, label]) => (
               <div key={num} style={s(STAT_CELL)}>
                 <div style={s(STAT_NUM)}>{num}</div>
@@ -249,20 +255,22 @@ export default function Page() {
       </section>
 
       <section id="ai" style={s('border-bottom: 2px solid var(--color-text)')}>
-        <div style={s(WRAP)}>
-          <div style={s('display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.4fr); gap: 56px; align-items: start')}>
+        <div data-r="pad" style={s(WRAP)}>
+          <div data-r="split" style={s('display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.4fr); gap: 56px; align-items: start')}>
             <div>
               <div style={s(KICKER + '; margin-bottom: 20px')}>01 — Ask first</div>
               <h2 style={s(H2 + '; margin: 0 0 20px')}>Interview me before you interview me.</h2>
               <p style={s('font-size: 17px; line-height: 1.55; color: var(--color-neutral-800); margin: 0 0 20px')}>
                 An assistant trained on my resume, project history and the details behind every number on this page. Ask
-                what I actually built, which tools I ran it on, or how a specific figure was measured.
+                how a figure was measured, what the program cost to run, or how I work with the leadership team that
+                funds it.
               </p>
               <p style={s("font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.6; color: var(--color-neutral-700); margin: 0")}>
-                Answers cite the role and year they come from. Nothing invented. Powered by Google Gemini.
+                Answers cite the role and year they come from. Nothing invented. Powered by Google Gemini 2.5 Flash —
+                replies can take a few seconds on the free tier.
               </p>
             </div>
-            <div style={s('border: 2px solid var(--color-text); background: var(--color-neutral-100); display: flex; flex-direction: column; min-height: 460px')}>
+            <div data-r="chat" style={s('border: 2px solid var(--color-text); background: var(--color-neutral-100); display: flex; flex-direction: column; min-height: 460px')}>
               <div style={s('display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 2px solid var(--color-text); background: var(--color-text); color: #fff')}>
                 <span style={s('width: 8px; height: 8px; background: var(--color-accent-500); display: block')} />
                 <span style={s("font-family: 'JetBrains Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase")}>
@@ -318,7 +326,7 @@ export default function Page() {
                   value={draft}
                   onChange={(e) => setDraft(e.target.value)}
                   placeholder="Ask about a project, tool or number…"
-                  style={s("flex: 1; border: 0; background: transparent; padding: 16px; font-size: 15px; font-family: 'Archivo', system-ui, sans-serif")}
+                  style={s("flex: 1; border: 0; background: transparent; padding: 16px; font-size: 16px; font-family: 'Archivo', system-ui, sans-serif")}
                 />
                 <button className="btn btn-primary" type="submit" style={s('border: 0; padding-left: 24px; padding-right: 24px')}>
                   Send
@@ -330,12 +338,12 @@ export default function Page() {
       </section>
 
       <section id="experience" style={s('border-bottom: 2px solid var(--color-text)')}>
-        <div style={s(WRAP)}>
+        <div data-r="pad" style={s(WRAP)}>
           <div style={s(KICKER + '; margin-bottom: 20px')}>02 — Track record</div>
           <h2 style={s(H2 + '; margin: 0 0 48px')}>Where the numbers came from</h2>
 
           {ROLES.map((r, i) => (
-            <div key={r.org} style={s(ROW + '; border-top: 2px solid ' + (i === 0 ? 'var(--color-text)' : 'var(--color-divider)'))}>
+            <div key={r.org} data-r="row" style={s(ROW + '; border-top: 2px solid ' + (i === 0 ? 'var(--color-text)' : 'var(--color-divider)'))}>
               <div>
                 <div style={s('font-size: 20px; font-weight: 800; letter-spacing: -0.02em')}>{r.org}</div>
                 <div style={s(MONO_SM + '; margin-top: 6px')}>{r.dates}</div>
@@ -351,14 +359,14 @@ export default function Page() {
                   ))}
                 </div>
               </div>
-              <div style={s('border-left: 2px solid var(--color-accent); padding-left: 16px')}>
+              <div data-r="stat" style={s('border-left: 2px solid var(--color-accent); padding-left: 16px')}>
                 <div style={s('font-size: 30px; font-weight: 900; letter-spacing: -0.03em; color: var(--color-accent-700)')}>{r.stat}</div>
                 <div style={s('font-size: 13px; line-height: 1.4; color: var(--color-neutral-800); margin-top: 4px')}>{r.statLabel}</div>
               </div>
             </div>
           ))}
 
-          <div style={s(ROW + '; border-top: 2px solid var(--color-divider); border-bottom: 2px solid var(--color-divider)')}>
+          <div data-r="row" style={s(ROW + '; border-top: 2px solid var(--color-divider); border-bottom: 2px solid var(--color-divider)')}>
             <div>
               <div style={s('font-size: 20px; font-weight: 800; letter-spacing: -0.02em')}>Earlier</div>
               <div style={s(MONO_SM + '; margin-top: 6px')}>2011 — 2016</div>
@@ -380,11 +388,11 @@ export default function Page() {
       </section>
 
       <section style={s('border-bottom: 2px solid var(--color-text)')}>
-        <div style={s(WRAP)}>
+        <div data-r="pad" style={s(WRAP)}>
           <div style={s(KICKER + '; margin-bottom: 32px')}>03 — Recommendations</div>
           <div style={s('display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2px; background: var(--color-divider)')}>
             {RECOMMENDATIONS.map((r) => (
-              <div key={r.who} style={s('background: var(--color-bg); ' + r.pad)}>
+              <div key={r.who} data-r="quote" style={s('background: var(--color-bg); ' + r.pad)}>
                 <p style={s(QUOTE)}>{r.text}</p>
                 <div style={s(ATTRIB)}>{r.who}</div>
               </div>
@@ -393,6 +401,8 @@ export default function Page() {
           <a
             className="btn btn-ghost"
             href="https://www.linkedin.com/in/rajkumarthanudhasan/details/recommendations/"
+            target="_blank"
+            rel="noopener noreferrer"
             style={s('margin-top: 28px')}
           >
             All recommendations on LinkedIn
@@ -401,8 +411,8 @@ export default function Page() {
       </section>
 
       <section id="skills" style={s('border-bottom: 2px solid var(--color-text)')}>
-        <div style={s(WRAP)}>
-          <div style={s('display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 2fr); gap: 56px; align-items: start')}>
+        <div data-r="pad" style={s(WRAP)}>
+          <div data-r="split" style={s('display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 2fr); gap: 56px; align-items: start')}>
             <div>
               <div style={s(KICKER + '; margin-bottom: 20px')}>04 — Toolkit</div>
               <h2 style={s(H2 + '; margin: 0 0 20px')}>Certified on UiPath and Blue Prism. Fluent in the rest.</h2>
@@ -431,7 +441,7 @@ export default function Page() {
       </section>
 
       <section id="education" style={s('border-bottom: 2px solid var(--color-text)')}>
-        <div style={s(WRAP)}>
+        <div data-r="pad" style={s(WRAP)}>
           <div style={s(KICKER + '; margin-bottom: 32px')}>05 — Education &amp; certification</div>
           <div style={s('display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 40px')}>
             {EDUCATION.map(([kicker, title, lines], i) => (
@@ -453,9 +463,9 @@ export default function Page() {
       </section>
 
       <footer style={s('background: var(--color-text); color: var(--color-neutral-100)')}>
-        <div style={s('max-width: 1240px; margin: 0 auto; padding: 72px 32px 40px')}>
+        <div data-r="pad" style={s('max-width: 1240px; margin: 0 auto; padding: clamp(48px, 8vw, 72px) 32px 40px')}>
           <h2 style={s('font-size: clamp(34px, 5vw, 64px); line-height: 1; letter-spacing: -0.035em; font-weight: 900; margin: 0 0 32px; max-width: 18ch')}>
-            Open to senior automation roles.
+            Open to Lead Developer &amp; Solution Architect roles.
           </h2>
           <div style={s('display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 56px')}>
             <a className="btn btn-primary" href="mailto:rajkumar.thanudhasan@gmail.com">
@@ -464,10 +474,10 @@ export default function Page() {
             <a className="btn btn-secondary" href="tel:+14074090749" style={s('background: transparent; color: var(--color-neutral-100); border-color: var(--color-neutral-600)')}>
               (407) 409-0749
             </a>
-            <a className="btn btn-ghost" href="https://www.linkedin.com/in/rajkumarthanudhasan/" style={s('color: var(--color-neutral-100)')}>
+            <a className="btn btn-ghost" href="https://www.linkedin.com/in/rajkumarthanudhasan/" target="_blank" rel="noopener noreferrer" style={s('color: var(--color-neutral-100)')}>
               LinkedIn
             </a>
-            <a className="btn btn-ghost" href="/Rajkumar_Thanudhasan_Resume.pdf" style={s('color: var(--color-neutral-100)')}>
+            <a className="btn btn-ghost" href="/Rajkumar_Thanudhasan_Resume.pdf" target="_blank" rel="noopener noreferrer" style={s('color: var(--color-neutral-100)')}>
               Resume PDF
             </a>
           </div>
