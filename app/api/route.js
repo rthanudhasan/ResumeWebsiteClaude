@@ -152,19 +152,21 @@ across production support, enhancements, and new development within a three-pers
 
 2. Dish Network 	May 2024 – June 2025
 Senior Software Developer/Architect(Intelligent Automation - CFO Team)
-● Implemented a couple of full life cycles of RPA Automation here at Dish for the Fixed Assets Team involving
-applications like Oracle Fusion Cloud ERP, Aura Player, NexSysOne, and Orbit reports.
-● Used OCR tools like Abbyya and AI tools like Appzen to improve efficiency and optimize RPA projects for the
-Accounts Payable team.
-● Reviewing the applications involved for each process and deciding the Automation approach, which is most
-important for every automation to get the best results.
-● Constant communication with the business partners to develop and deploy their ideas. Also, ensuring that there
-is a clear establishment of what can be created within what timeframe and what are its requirements.
-● Well-experienced in understanding the API documentation and building the required API call for the process.
-● Used Python for some of the automation where it was required to read HTML and PDF documents. Also used
-UiPath Document Understanding for automations that require getting data from the PDF.
-● Expertise in handling exceptions and involved in optimizing the business process to get 95% success rates by
-Automation.
+● Architected and delivered an end-to-end utility bill automation using an ML model deployed through Ollama and
+integrated with RPA, extracting data from 40,000+ bills across 1,200 vendors and delivering $80,000 in monthly
+savings.
+● Implemented document classification and information extraction using open-source ML models, spaCy, and
+Transformers, supplying structured data to downstream automation workflows.
+● Delivered full-lifecycle UiPath automations for Fixed Assets across Oracle Fusion Cloud ERP, Aura Player,
+NexSysOne, and Orbit reports.
+● Applied ABBYY OCR, AppZen, and UiPath Document Understanding to automate document processing and improve
+Accounts Payable workflows.
+● Developed Python routines for HTML and PDF processing and built API integrations to extract and exchange
+application data.
+● Evaluated business requirements and application capabilities to select appropriate UI automation, API, and AI/ML
+approaches; partnered with stakeholders to define scope, delivery timelines, and deployment plans.
+● Improved exception handling and optimized production workflows to achieve approximately 95% automation
+success rates.
 3. Nielsen 	June 2019 – May 2024
 Robotic Process Automation Developer/Architect
 Products: TLR (Total Line Reporting) SalesForce, Bi Reports, iHeart Reporting
