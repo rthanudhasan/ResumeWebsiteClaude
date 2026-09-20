@@ -61,10 +61,10 @@ const ROLES = [
     org: 'Dish Network',
     dates: 'May 2024 — June 2025',
     title: 'Senior Software Developer / Architect, CFO Intelligent Automation',
-    body: 'Full life-cycle automation for the Fixed Assets team across Oracle Fusion Cloud ERP, Aura Player, NexSysOne and Orbit, plus ABBYY OCR and AppZen for Accounts Payable. Chose the approach application by application, built the API calls from the documentation, and used Python and Document Understanding where the input was PDF or HTML. Exception handling held the success rate at 95%.',
-    tags: ['Oracle Fusion Cloud', 'ABBYY', 'AppZen', 'Python'],
-    stat: '95%',
-    statLabel: 'automation success rate'
+    body: 'Architected an end-to-end utility bill automation on an ML model served through Ollama and wired into RPA, reading 40,000+ bills across 1,200 vendors for $80,000 in monthly savings. Document classification and extraction ran on open-source models with spaCy and Transformers, feeding structured data downstream. Also delivered full life-cycle Fixed Assets automation across Oracle Fusion Cloud ERP, Aura Player, NexSysOne and Orbit, with ABBYY OCR, AppZen and Document Understanding on Accounts Payable. Exception handling and workflow tuning held the success rate near 95%.',
+    tags: ['Ollama', 'spaCy · Transformers', 'Oracle Fusion Cloud', 'ABBYY', 'AppZen', 'Python'],
+    stat: '$80K',
+    statLabel: 'monthly savings, 40,000+ bills'
   },
   {
     org: 'Nielsen',
@@ -234,7 +234,7 @@ export default function Page() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/portrait.jpg"
-              alt="Rajkumar Thanudhasan"
+              alt="Rajkumar Thanudhasan, Lead Developer and Solution Architect in RPA and intelligent automation"
               style={s('display: block; width: 100%; height: 100%; min-height: 420px; object-fit: cover; object-position: 50% 18%; filter: grayscale(1) contrast(1.12)')}
             />
           </div>
