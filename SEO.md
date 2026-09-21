@@ -30,6 +30,11 @@
    three headline numbers) is what Open Graph and Twitter now point at. After deploying, re-scrape the
    URL in LinkedIn's Post Inspector and Facebook's Sharing Debugger so the old square image is flushed.
 
+6. **Favicon** — replaced with an RT monogram on the Modernist red: `app/favicon.ico` (16/32/48),
+   `app/icon.png` (512) and `app/apple-icon.png` (180). Next's app router serves all three
+   automatically. Google caches favicons for weeks — requesting indexing in Search Console is the
+   fastest way to flush the old one from search results.
+
 ## Worth doing later
 
 - **Publish something.** One indexable write-up — the Kindo AI agent, or the Ollama utility-bill
