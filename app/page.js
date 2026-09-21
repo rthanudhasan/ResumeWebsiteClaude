@@ -258,12 +258,12 @@ export default function Page() {
         <div data-r="pad" style={s(WRAP)}>
           <div data-r="split" style={s('display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.4fr); gap: 56px; align-items: start')}>
             <div>
-              <div style={s(KICKER + '; margin-bottom: 20px')}>01 — Ask first</div>
-              <h2 style={s(H2 + '; margin: 0 0 20px')}>Interview me before you interview me.</h2>
+              <div style={s(KICKER + '; margin-bottom: 20px')}>01 — Working demo</div>
+              <h2 style={s(H2 + '; margin: 0 0 20px')}>I built the agent that answers for me.</h2>
               <p style={s('font-size: 17px; line-height: 1.55; color: var(--color-neutral-800); margin: 0 0 20px')}>
-                An assistant trained on my resume, project history and the details behind every number on this page. Ask
-                how a figure was measured, what the program cost to run, or how I work with the leadership team that
-                funds it.
+                The same kind of retrieval agent I build at work, grounded in my resume and the detail behind every
+                number on this page. Ask how a figure was measured, what the program cost to run, or how I work with
+                the leadership team that funds it — and judge the build while you are at it.
               </p>
               <p style={s("font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.6; color: var(--color-neutral-700); margin: 0")}>
                 Answers cite the role and year they come from. Nothing invented. Powered by Google Gemini 2.5 Flash —
@@ -360,7 +360,7 @@ export default function Page() {
                 </div>
               </div>
               <div data-r="stat" style={s('border-left: 2px solid var(--color-accent); padding-left: 16px')}>
-                <div style={s('font-size: 30px; font-weight: 900; letter-spacing: -0.03em; color: var(--color-accent-700)')}>{r.stat}</div>
+                <div style={s('font-size: 30px; font-weight: 900; letter-spacing: -0.03em; color: var(--color-text)')}>{r.stat}</div>
                 <div style={s('font-size: 13px; line-height: 1.4; color: var(--color-neutral-800); margin-top: 4px')}>{r.statLabel}</div>
               </div>
             </div>
